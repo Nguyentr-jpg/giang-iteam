@@ -47,6 +47,11 @@ Theo `rules/planning.md`: chẻ thành task con review được, mỗi con giao 
 - Một task một PR, PR nhỏ dễ review (`rules/review.md`).
 
 **QC bắt buộc**: mỗi PR nhân viên → Quân QC (build/lint/test, verify) trước founder.
+Vòng làm→kiểm→sửa chạy qua board (hộp thư) theo `rules/loop.md`: Giang là hub điều
+Quân/Đức, ghi trao đổi vào `extra.thread[]`, **cap số vòng QC (mặc định 3)** rồi
+escalate cho founder nếu chưa thống nhất. Kiểm độc lập áp cho **mọi thay đổi không
+tầm thường — kể cả bản vá Giang tự viết**; ai viết ít quan trọng, có người độc lập
+kiểm mới quan trọng.
 
 ## 4. Dây chuyền tóm tắt
 ```

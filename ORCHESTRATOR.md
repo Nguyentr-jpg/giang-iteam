@@ -29,7 +29,7 @@ tiết: `rules/direct-intake.md`.
 
 File này là vòng lặp điều phối — ngắn và ổn định. Chi tiết nằm ở các thư mục:
 - `roster/` — mỗi nhân viên 1 file. Đọc để biết ai làm được gì.
-- `rules/` — quy tắc vận hành (roles, direct-intake, planning, intake, vòng đời task, review). Đọc khi task chạm tới.
+- `rules/` — quy tắc vận hành (roles, direct-intake, planning, intake, loop, vòng đời task, review). Đọc khi task chạm tới.
 - `playbooks/` — quy trình cho việc lặp lại. Đọc khi loại task khớp.
 - `logs/` — ghi nhật ký mỗi lần chạy.
 
