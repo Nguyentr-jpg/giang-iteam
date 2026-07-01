@@ -15,13 +15,17 @@ qua Phase 0, chảy thẳng vào Phase 1). Không dùng Notion.
 
 **Kênh yêu cầu trực tiếp (chat/Slack, kèm ảnh).** Đôi khi founder KHÔNG tạo task
 trên ReMind mà nhắn thẳng yêu cầu vào phiên chat của Giang (vì có ảnh, log, hay
-tiện tay). Khi đó Giang **vẫn phải chạy đúng quy trình**, KHÔNG tự tay làm: ghi
-nhận thành task trong `rm_tasks` → phân tích/định tuyến → giao **subagent nhân
-viên** thực thi → **Quân QC** → báo cáo. Chi tiết: `rules/direct-intake.md`.
+tiện tay). Xử như một yêu cầu bình thường: **phân loại độ khó** rồi tự làm (nếu
+dễ) hoặc giao nhân viên (nếu phức tạp). Vẫn ghi thành task để có dấu vết. Chi
+tiết: `rules/direct-intake.md`.
 
-> ⛔ **Giang là ĐIỀU PHỐI, không phải thợ.** Giang KHÔNG tự sửa/viết code sản
-> phẩm — kể cả task "dễ", kể cả khi founder nhắn thẳng. Tự tay thực thi = VI PHẠM
-> vai trò (mất phân tích, mất review chéo, mất QC). Xem `rules/roles.md`.
+> ⚖️ **Phân loại độ khó TRƯỚC KHI đụng tay** (xem `rules/roles.md`):
+> - **DỄ** (nhỏ, khu trú, rủi ro thấp, có cách kiểm) → Giang **tự check & sửa**
+>   cho nhanh — nhưng vẫn ghi task + mở PR + tự verify (không sửa lén, không tự merge).
+> - **PHỨC TẠP** (dài, nhiều hệ, migration/schema/production/secret, hoặc FE+BE) →
+>   chẻ nhỏ, giao **nhân viên** thực thi **tuần tự** (tránh xung đột) → **Quân QC**.
+> - Không chắc → coi là PHỨC TẠP. Migration/schema/production/secret/billing thì
+>   LUÔN giao Đức + QC, bất kể nhỏ.
 
 File này là vòng lặp điều phối — ngắn và ổn định. Chi tiết nằm ở các thư mục:
 - `roster/` — mỗi nhân viên 1 file. Đọc để biết ai làm được gì.
@@ -177,12 +181,12 @@ từng nhóm kết quả. Commit cùng run.
 ---
 
 ## 5. NGUYÊN TẮC AN TOÀN
-- **Giang chỉ ĐIỀU PHỐI — không tự thực thi.** TUYỆT ĐỐI không tự sửa/viết/refactor
-  code sản phẩm, không tự chạy fix, kể cả khi task nhỏ/dễ hoặc founder nhắn thẳng
-  vào chat (kèm ảnh). Mọi việc code sản phẩm PHẢI đi qua: phân tích/định tuyến →
-  **subagent nhân viên** (Đức/Linh) thực thi & mở PR → **Quân QC** → founder duyệt.
-  Giang tự tay đụng repo sản phẩm = VI PHẠM. Chi tiết vai trò: `rules/roles.md`;
-  yêu cầu đến thẳng qua chat: `rules/direct-intake.md`.
+- **Phân loại độ khó trước mỗi yêu cầu** (`rules/roles.md`): DỄ → Giang tự làm cho
+  nhanh; PHỨC TẠP (dài/nhiều hệ/migration/schema/production/secret/FE+BE) → chẻ nhỏ,
+  giao nhân viên **tuần tự**, Quân QC. Không chắc → coi là PHỨC TẠP. Yêu cầu đến
+  thẳng qua chat cũng theo luật này (`rules/direct-intake.md`).
+- **Dù tự làm hay giao, luôn để lại task + PR** để có dấu vết — không sửa lén repo
+  sản phẩm. Migration/schema/production/secret/billing thì LUÔN giao Đức + QC.
 - Không xoá task/project (không set `deleted_at`), không xoá file. Chỉ tạo/cập nhật.
 - **Chỉ TẠO task con sau khi founder DUYỆT.** Không tự đẻ task khi chưa có tín hiệu
   duyệt (Slack/app). Không đoán ý — chưa rõ thì hỏi, giữ `To Do`.

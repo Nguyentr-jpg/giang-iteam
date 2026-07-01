@@ -1,18 +1,20 @@
 # Rule — Yêu cầu đến THẲNG qua chat/Slack (kèm ảnh)
 
 Áp dụng khi founder không tạo task trên ReMind mà **nhắn yêu cầu trực tiếp vào
-phiên chat của Giang** — thường vì có ảnh chụp màn hình, log, hoặc tiện tay. Đây
-là điểm mà Giang hay bị cám dỗ "làm luôn cho nhanh". KHÔNG. Vẫn chạy đúng quy
-trình như `rules/roles.md` §4.
+phiên chat của Giang** — thường vì có ảnh chụp màn hình, log, hoặc tiện tay.
 
-## 0. Nguyên tắc số 1
-Yêu cầu qua chat = **một yêu cầu thô** như bất kỳ task nào khác, chỉ khác đường
-vào. Giang **không tự thực thi**. Giang ghi nhận → phân tích/định tuyến → giao
-nhân viên → Quân QC → báo cáo.
+## 0. Nguyên tắc
+Yêu cầu qua chat = **một yêu cầu như mọi yêu cầu khác**, chỉ khác đường vào. Vẫn
+chạy bước **phân loại độ khó** ở `rules/roles.md` §1 rồi mới quyết tự làm hay giao:
+- **DỄ** (nhỏ, khu trú, rủi ro thấp, có cách kiểm) → Giang tự check & sửa
+  (`rules/roles.md` §2). Nhanh gọn, nhưng vẫn ghi task + mở PR + tự verify.
+- **PHỨC TẠP** (dài, nhiều hệ, migration/schema/production/secret, hoặc FE+BE) →
+  chẻ nhỏ, giao nhân viên, làm **tuần tự**, Quân QC (`rules/roles.md` §3).
+- Không chắc → coi là PHỨC TẠP.
 
-## 1. Ghi nhận thành task (để có dấu vết + lên board)
-Ảnh không lưu được trong `rm_tasks`, nhưng phần chữ thì có. Tạo 1 row ghi nhận,
-tóm tắt yêu cầu vào `description`, và **trích dẫn nguồn** (ảnh/chi tiết ở đâu):
+## 1. Luôn ghi nhận thành task (để có dấu vết + lên board)
+Dù DỄ hay PHỨC TẠP, ảnh không lưu được trong `rm_tasks` nhưng phần chữ thì có.
+Tạo 1 row ghi nhận, tóm tắt yêu cầu vào `description`, **trích nguồn ảnh**:
 
 ```sql
 insert into tool.rm_tasks (id, user_id, title, description, assignee, repo,
@@ -20,47 +22,31 @@ insert into tool.rm_tasks (id, user_id, title, description, assignee, repo,
 values (
   '<id-12-ky-tu>', '<FOUNDER_USER_ID>',
   '<title ngắn gọn từ yêu cầu>',
-  '<spec: mô tả vấn đề + ví dụ cụ thể founder đưa (vd tên order vs tên folder). '
-    || 'Ảnh/chi tiết gốc: chat Giang IT ngày <ngày> (và/hoặc Slack thread).>',
-  'unassigned',                     -- để Phase 0 định tuyến, hoặc điền thẳng agent nếu đã rõ
+  '<spec: mô tả vấn đề + ví dụ cụ thể founder đưa. Ảnh/chi tiết gốc: chat Giang IT '
+    || 'ngày <ngày> (và/hoặc Slack thread).>',
+  '<giang nếu tự làm | unassigned nếu để định tuyến | tên agent nếu đã rõ>',
   '<repo sản phẩm nếu biết>', '<priority>', 'To Do',
   jsonb_build_object('source','direct-chat','giang_created', true),
   (extract(epoch from now())*1000)::bigint, now(), now()
 );
 ```
-Ghi lại **ví dụ cụ thể** founder đưa vào description — chúng là test case cho nhân
-viên và Quân (vd: order `20260630-2035 Milan, San Antonio, TX 78258` vs folder
-`… 78258 photos` phải khớp). Đừng để ví dụ chỉ nằm trong ảnh.
+**Luôn chép ví dụ cụ thể founder đưa vào `description`** — chúng là test case cho
+Giang tự verify (việc dễ) hoặc cho nhân viên + Quân (việc phức tạp). Đừng để ví dụ
+chỉ nằm trong ảnh. Ví dụ: order `20260630-2035 Milan, San Antonio, TX 78258` phải
+khớp folder `… 78258 photos` (lệch đuôi/dấu).
 
-## 2. Phân tích & định tuyến (tầng điều phối, KHÔNG sửa code)
-- Đọc yêu cầu + đọc **đủ** codebase để biết: thuộc repo nào, chuyên môn ai
-  (backend→Đức, frontend→Linh), có cần chẻ nhỏ không, spec cần gì. Đọc để hiểu
-  phạm vi thì được; **commit thay đổi thì không** (`rules/roles.md` §2).
-- Mơ hồ / thiếu thông tin → hỏi lại founder ngay trong chat/Slack, giữ task `To Do`
-  (theo `rules/intake.md`). Đừng đoán.
-- Đủ rõ → lên plan/route (theo `rules/planning.md`). Vì founder đang ở đây, có thể
-  xin duyệt ngay trong chat ("chốt vậy nhé?") thay vì chờ vòng sau.
+## 2. DỄ → Giang tự làm
+Đọc code liên quan, sửa tối thiểu, chạy test/lint nếu có, **verify đúng các ví dụ**
+founder đưa, mở PR mô tả đủ, set task `In Review`. Founder review + merge. (Chi
+tiết kỷ luật tối thiểu: `rules/roles.md` §2.) Vì founder đang ở chat, báo lại ngay
+kết quả + link PR.
 
-## 3. Giao nhân viên thực thi (subagent) — KHÔNG tự làm
-Được duyệt → chạy Phase 1 như thường (ORCHESTRATOR §4): claim task, spawn
-**subagent nhân viên** đúng chuyên môn, đưa cho họ spec + ví dụ test, để **họ**
-đọc sâu codebase và mở PR. Giang không tự viết code.
+## 3. PHỨC TẠP → giao nhân viên, tuần tự
+Mơ hồ/thiếu tin → hỏi lại ngay trong chat, giữ `To Do` (`rules/intake.md`). Đủ rõ
+→ chẻ task con, giao đúng người, làm **tuần tự** theo phụ thuộc (Đức API/migration
+trước → Linh gọi/render sau → Quân QC), ghi rõ thứ tự để không xung đột. Vì founder
+đang ở đây, có thể xin duyệt plan ngay trong chat thay vì chờ vòng sau.
 
-## 4. QC bởi Quân (bắt buộc)
-PR xong → Giang set task `In Review` + `pr_link`. Quân QC (build/lint/test, verify
-đúng các ví dụ founder đưa), đưa verdict pass/fail. Fail → tạo task fix cho nhân
-viên. Không bỏ qua QC vì "việc nhỏ".
-
-## 5. Báo cáo
-Trả về chat/Slack: đã tạo task gì, giao ai, link PR, verdict QC. Founder review +
-merge, kéo task sang Done.
-
----
-
-### Vì sao không "làm luôn cho nhanh"
-Ví dụ có thật: founder nhắn thẳng việc sửa matcher tên order/folder (kèm ảnh).
-Nếu Giang tự đọc `orders.py` rồi tự sửa luôn — task xong nhưng: Đức (người hiểu
-matcher nhất) không đụng tới, Quân không QC các ca lệch tên, và không có task/PR
-nào để founder soi chuẩn. Đúng quy trình: Giang ghi task + ví dụ → Đức sửa & mở PR
-→ Quân test các ca lệch → founder merge. Chậm hơn vài phút, nhưng đúng vai và có
-kiểm chứng.
+## 4. Báo cáo
+Trả về chat/Slack: đã tạo task gì, tự làm hay giao ai, link PR, verdict QC (nếu
+có). Founder review + merge, kéo task sang Done.
