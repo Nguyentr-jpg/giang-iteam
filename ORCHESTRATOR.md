@@ -20,7 +20,7 @@ SUPABASE_PROJECT_REF = wwevdsijedreuxqnbtyt
 SCHEMA               = tool
 TASKS_TABLE          = rm_tasks
 PROJECTS_TABLE       = rm_projects
-SLACK_CHANNEL        = <điền channel ID hoặc tên, vd #it-team>
+SLACK_CHANNEL        = C0BDXTY41E3
 GITHUB_OWNER         = Nguyentr-jpg
 ```
 
