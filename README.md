@@ -5,16 +5,19 @@ Repo gốc của **Giang** — orchestrator điều phối task cho team IT.
 ## Nội dung
 
 - **`ORCHESTRATOR.md`** — playbook của Giang: mỗi lần routine chạy, đọc task
-  `To Do` trên Notion, giao cho đúng nhân viên (subagent), mở PR trên GitHub,
-  cập nhật trạng thái và báo cáo Slack.
+  `To Do` trong Supabase (`tool.rm_tasks`), giao cho đúng nhân viên (subagent),
+  mở PR trên GitHub, cập nhật trạng thái và báo cáo Slack.
 - **`SKILL_TEMPLATE.md`** — template file `SKILL.md` đặt ở gốc repo của mỗi
   nhân viên. Định danh nhân viên là ai, làm được gì, và loop thực thi task.
 
 ## Trạng thái hiện tại
 
-Roster trong `ORCHESTRATOR.md` đang **rỗng** và các anchor ID (Notion / Slack)
-vẫn là placeholder. Trước khi chạy thật cần:
+Roster trong `ORCHESTRATOR.md` đang **rỗng** và `SLACK_CHANNEL` vẫn là
+placeholder. Trước khi chạy thật cần:
 
-1. Điền 4 anchor ID ở mục 1 của `ORCHESTRATOR.md`.
+1. Điền `SLACK_CHANNEL` ở mục 1 của `ORCHESTRATOR.md` (toạ độ Supabase đã có).
 2. Thêm nhân viên vào bảng ROSTER (mục 2) và tạo `SKILL.md` trong repo nhân
    viên tương ứng dựa trên `SKILL_TEMPLATE.md`.
+3. Routine "Giang IT" (Claude Code UI): connectors bật **Supabase + Slack +
+   GitHub** (bỏ Notion); Instructions vẫn trỏ `@giang-it/ORCHESTRATOR.md`;
+   Trigger giữ Schedule 2x/ngày.
