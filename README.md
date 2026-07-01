@@ -12,12 +12,13 @@ Repo gốc của **Giang** — orchestrator điều phối task cho team IT.
 
 ## Trạng thái hiện tại
 
-Roster trong `ORCHESTRATOR.md` đang **rỗng** và `SLACK_CHANNEL` vẫn là
-placeholder. Trước khi chạy thật cần:
+Anchor đã điền đủ (toạ độ Supabase + `SLACK_CHANNEL = C0BDXTY41E3`). Roster
+trong `ORCHESTRATOR.md` vẫn **rỗng**. Trước khi thực thi task thật cần:
 
-1. Điền `SLACK_CHANNEL` ở mục 1 của `ORCHESTRATOR.md` (toạ độ Supabase đã có).
-2. Thêm nhân viên vào bảng ROSTER (mục 2) và tạo `SKILL.md` trong repo nhân
-   viên tương ứng dựa trên `SKILL_TEMPLATE.md`.
-3. Routine "Giang IT" (Claude Code UI): connectors bật **Supabase + Slack +
+1. Thêm nhân viên vào bảng ROSTER (mục 2) và tạo `SKILL.md` trong repo nhân
+   viên tương ứng dựa trên `SKILL_TEMPLATE.md`, rồi set `assignee` của task
+   khớp tên đó.
+2. Routine "Giang IT" (Claude Code UI): connectors bật **Supabase + Slack +
    GitHub** (bỏ Notion); Instructions vẫn trỏ `@giang-it/ORCHESTRATOR.md`;
    Trigger giữ Schedule 2x/ngày.
+3. Phase 1 remind tạo bảng `tool.rm_tasks` thật để pipeline có dữ liệu đọc.
