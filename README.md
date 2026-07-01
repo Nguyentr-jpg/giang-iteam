@@ -7,7 +7,7 @@ Instructions tới `ORCHESTRATOR.md` của repo này.
 ```
 ORCHESTRATOR.md     # vòng lặp điều phối (ngắn, ổn định)
 roster/             # mỗi nhân viên 1 file (duc.md ...)
-rules/              # quy tắc: roles, direct-intake, planning, intake, task-lifecycle, review
+rules/              # quy tắc: roles, direct-intake, planning, intake, loop, task-lifecycle, review
 playbooks/          # quy trình việc lặp lại (đọc khi khớp)
 logs/               # nhật ký mỗi lần chạy
 ```
