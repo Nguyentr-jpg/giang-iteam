@@ -73,14 +73,21 @@ where id = '<task-id>';
   **ping founder** đích danh. KHÔNG lặp tiếp, KHÔNG tự quyết thay founder.
 - Không bao giờ để Đức↔Quân ping-pong vô hạn. Trần vòng là cứng.
 
-## 5. Máy trạng thái — ai được ghi gì
-| Việc | Ai ghi |
-|------|--------|
-| tạo task, assign, tăng qc_round, escalate, done, tổng hợp | **Giang** |
-| kind=report / kind=fix (mình đã làm gì) | nhân viên (Đức/Linh) |
-| kind=qc + verdict | **Quân** |
-| review & merge PR, đóng task (In Review→Done) | **founder** |
+## 5. Máy trạng thái — tác giả (`by`) vs người GHI board
+Trường `by` đánh dấu **tác giả nội dung**; cột ai chạy lệnh ghi board thì tuỳ ai
+có kết nối Supabase (giữ nhân viên đơn giản):
 
+| Nội dung | Tác giả (`by`) | Ai GHI vào board |
+|----------|----------------|------------------|
+| tạo task, assign, tăng qc_round, qc_state, escalate, done, tổng hợp | giang | **Giang** |
+| kind=report / kind=fix (đã làm gì) | duc/linh | **Giang** ghi hộ từ report subagent trả về — Đức/Linh KHÔNG đụng board |
+| kind=qc + verdict | quan | **Quân tự ghi** (Quân vốn đã ghi board) |
+| review & merge PR, đóng task (In Review→Done) | founder | founder |
+
+- **Đức/Linh chỉ TRẢ report ngắn cho Giang; Giang append `report`/`fix` giúp.**
+  Quân tự append `qc` (nhất quán với việc Quân vốn ghi `extra.quan_verdict`).
+- `extra.quan_verdict`/`quan_reviewed_sha` vẫn giữ làm **marker chống review trùng**;
+  dòng `qc` trong `thread` là bản cho founder soi. Hai cái bổ trợ, không mâu thuẫn.
 - Chống trùng vẫn dùng claim (ORCHESTRATOR B4). `extra.thread` là append-only —
   luôn `|| jsonb_build_array(...)`, không ghi đè mảng cũ.
 - Mọi update kèm `updated_at=now()` để Realtime đẩy timeline về UI.
