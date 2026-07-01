@@ -7,17 +7,26 @@ Instructions tới `ORCHESTRATOR.md` của repo này.
 ```
 ORCHESTRATOR.md     # vòng lặp điều phối (ngắn, ổn định)
 roster/             # mỗi nhân viên 1 file (duc.md ...)
-rules/              # quy tắc: intake, task-lifecycle, review
+rules/              # quy tắc: planning, intake, task-lifecycle, review
 playbooks/          # quy trình việc lặp lại (đọc khi khớp)
 logs/               # nhật ký mỗi lần chạy
 ```
 
 ## Luồng hoạt động
-1. Founder tạo task ở tab "Team" của app ReMind → ghi vào `tool.rm_tasks` (Supabase).
-2. Routine Giang chạy 2 lần/ngày (+ Run tay khi cần): đọc task To Do.
-3. Tra `roster/` theo field `assignee` → giao nhân viên (subagent) → mở PR.
-4. Cập nhật status, báo Slack, ghi `logs/`.
-5. Founder review + merge PR → kéo task sang Done.
+Mỗi lần chạy Giang làm 2 phase:
+
+**Phase 0 — Intake & Planning** (mới): founder chỉ cần ném *yêu cầu thô* (task chưa
+gán nhân viên).
+1. Giang phân tích → **hỏi lại nếu chưa rõ**, hoặc **lên plan kèm đề xuất nhân viên**.
+2. Founder duyệt (reply "ok" trong Slack, hoặc thao tác trong app ReMind).
+3. Giang **tạo task con và gán đúng agent** → chảy vào Phase 1. Chi tiết: `rules/planning.md`.
+
+**Phase 1 — Thực thi**: với task đã gán nhân viên.
+4. Tra `roster/` theo `assignee` → giao nhân viên (subagent) → mở PR.
+5. Cập nhật status, báo Slack, ghi `logs/`.
+6. Founder review + merge PR → kéo task sang Done.
+
+(Founder vẫn có thể tự tạo task đã-gán-sẵn ở tab Team → bỏ qua Phase 0.)
 
 ## Thêm nhân viên mới
 1. Tạo `roster/<ten>.md` (copy mẫu từ `roster/duc.md`): đặt `assignee`, repo, skill file, chuyên môn.
@@ -33,4 +42,5 @@ logs/               # nhật ký mỗi lần chạy
 
 ## Anchors (trong ORCHESTRATOR.md)
 Supabase project `wwevdsijedreuxqnbtyt`, schema `tool`, bảng `rm_tasks`/`rm_projects`.
-Slack channel `C0BDXTY41E3`. GitHub owner `Nguyentr-jpg`.
+Slack channel `C0BDXTY41E3`. GitHub owner `Nguyentr-jpg`. `FOUNDER_USER_ID` (dùng
+khi Giang tạo task mới — `rm_tasks.user_id` không có default).
