@@ -46,7 +46,7 @@ TASKS_TABLE          = rm_tasks
 PROJECTS_TABLE       = rm_projects
 SLACK_CHANNEL        = C0BDXTY41E3
 GITHUB_OWNER         = Nguyentr-jpg
-FOUNDER_USER_ID      = 48d2127d-1e8b-42d2-b2af-6b750374d1c9
+FOUNDER_USER_ID      = 4a48dd4d-b56d-4e99-bafd-bc1670a0e853
 ```
 
 `FOUNDER_USER_ID` bắt buộc khi Giang **tạo task mới** (`rm_tasks.user_id` không có
