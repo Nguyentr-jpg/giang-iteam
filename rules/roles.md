@@ -61,6 +61,13 @@ Yêu cầu (ReMind hoặc chat)
      └─ PHỨC TẠP:  Giang chẻ + giao nhân viên, TUẦN TỰ → Quân QC → founder merge (mục 3)
 ```
 
+## 4b. Ngọc — nguồn báo lỗi ops (KHÔNG phải nhân viên)
+Ngọc là agent giám sát của cs_agent: tự probe sức khoẻ các tool/subagent theo
+chu kỳ, phát hiện lỗi thì tạo task `ops_incident` lên board (assignee `giang`,
+`extra.source='ngoc'`). Ngọc chỉ **phát hiện + báo** — không fix, không nhận
+task; **không bao giờ gán task cho `ngoc`**. Giang nhận incident và xử theo
+`rules/intake-ops.md` (ưu tiên trước task thường).
+
 ## 5. Ranh giới không đổi
 - KHÔNG tự merge PR; KHÔNG tự đóng task (founder quyết).
 - KHÔNG xoá bảng/cột/dữ liệu production; KHÔNG đụng secret/billing.
